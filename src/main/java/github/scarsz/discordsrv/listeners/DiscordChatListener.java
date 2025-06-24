@@ -103,7 +103,7 @@ public class DiscordChatListener extends ListenerAdapter {
         if (!DiscordSRV.config().getBoolean("DiscordChatChannelDiscordToMinecraft")) return;
 
         // enforce required account linking
-        if (DiscordSRV.config().getBoolean("DiscordChatChannelRequireLinkedAccount") && !event.getAuthor().isBot()) {
+        if (DiscordSRV.config().getBoolean("DiscordChatChannelRequireLinkedAccount")/* && !event.getAuthor().isBot()*/) {
             if (DiscordSRV.getPlugin().getAccountLinkManager() == null) {
                 event.getAuthor().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage(LangUtil.Message.FAILED_TO_CHECK_LINKED_ACCOUNT.toString()).queue());
                 DiscordUtil.deleteMessage(event.getMessage());
@@ -148,8 +148,8 @@ public class DiscordChatListener extends ListenerAdapter {
             }
         }
 
-        // block bots
-        if (DiscordSRV.config().getBoolean("DiscordChatChannelBlockBots") && event.getAuthor().isBot() && !event.isWebhookMessage()) {
+        // block bots (patched)
+        if (DiscordSRV.config().getBoolean("DiscordChatChannelBlockBots") /*&& event.getAuthor().isBot() && !event.isWebhookMessage()*/) {
             DiscordSRV.debug(Debug.DISCORD_TO_MINECRAFT, "Received Discord message from bot " + event.getAuthor() + " but DiscordChatChannelBlockBots is on");
             return;
         }
@@ -161,7 +161,7 @@ public class DiscordChatListener extends ListenerAdapter {
         }
 
         // blocked roles
-        if (!event.isWebhookMessage()) {
+        if (/*!event.isWebhookMessage()*/true) {
             boolean hasRole = DiscordSRV.config().getStringList("DiscordChatChannelBlockedRolesIds").stream().anyMatch(id -> event.getMember().getRoles().stream().anyMatch(r -> r.getId().equals(id)));
             boolean whitelist = DiscordSRV.config().getBoolean("DiscordChatChannelBlockedRolesAsWhitelist");
             if (whitelist != hasRole) {

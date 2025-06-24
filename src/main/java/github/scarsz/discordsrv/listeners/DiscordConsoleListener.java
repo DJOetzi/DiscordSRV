@@ -50,11 +50,13 @@ public class DiscordConsoleListener extends ListenerAdapter {
         // only do anything with the messages if it's in the console channel
         if (DiscordSRV.getPlugin().getConsoleChannel() == null || !event.getChannel().getId().equals(DiscordSRV.getPlugin().getConsoleChannel().getId()))
             return;
+        /*
         // block bots
         if (DiscordSRV.config().getBoolean("DiscordConsoleChannelBlockBots") && event.getAuthor().isBot()) {
             DiscordSRV.debug(Debug.UNCATEGORIZED, "Received a message from a bot in the console channel, but DiscordConsoleChannelBlockBots is enabled");
             return;
         }
+         */
 
         boolean isWhitelist = DiscordSRV.config().getBoolean("DiscordConsoleChannelBlacklistActsAsWhitelist");
         List<String> blacklistedCommands = DiscordSRV.config().getStringList("DiscordConsoleChannelBlacklistedCommands");
